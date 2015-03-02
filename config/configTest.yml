@@ -2,12 +2,8 @@ directories:
     - ./testfiles/folder1
     - ./testfiles/folder2
 
-filetypes:
-    - text/x-php=delete
-    - application/pdf=delete
+filetypes: [text/x-php=delete]
     
 command:
     executable: file
     options: -z -b --mime-type
-
-actionFolder: ./actions
