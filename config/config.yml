@@ -1,0 +1,10 @@
+directories:
+    - ./testfiles/folder1
+    - ./testfiles/folder2
+
+filetypes:
+    - [type: text/x-php, action: delete]
+    
+command:
+    executable: file
+    options: -z -b --mime-type
