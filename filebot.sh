@@ -35,25 +35,29 @@ scanFolder ()
 {
     for FILE in $FOLDERFILES;
     do
-      FILETYPE=$($COMMAND $COMMANDOPTIONS $FILE)
+      FILETYPE=$($COMMAND $COMMANDOPTIONS $FILE) 
       echo "Scanning: " $FILE ">" $FILETYPE
-
+     if [ ! -d "$FILE" ]; then
       checkFileTypeForAction $FILETYPE
       echo $FILEACTION
+      $FILEACTION
+     fi
     done
 }
 
 checkFileTypeForAction ()
 {
-    ORIGINALIFS="$IFS"
-    IFS='='
-    
-    for FILETYPEACTION in $FILETYPES;
-    do
-        read -a TYPEACTION <<< "${ns}"
-    done
-
-    IFS="$ORIGINALIFS"
+    myString="${FILETYPES//=/ }" 
+    read -a myArr <<<$myString
+    tLen=${#myArr[@]}
+      for (( i=0; i<${tLen}; i++ ));
+       do
+        if [ "$FILETYPE" = "${myArr[$i]}" ]; then
+         echo "Combaciano " $FILETYPE "=" ${myArr[$i]}
+         i=$((i+1))
+         ${myArr[$i]} $FILE
+        fi 
+      done
 }
 ################################################################################
 # Main                                                                         #
