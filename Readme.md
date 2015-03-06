@@ -25,7 +25,7 @@ An example: let's suppose you want to scan a WordPress upload dir for malicious 
 You have to configure the mime-type of the executable file, let's say `text/x-php`, you can configure an *action* to delete the evil file.
 The action actually is a bash function that performs a series of task against the file.
 
-As you can imagine after the action is performed some things will happen: you can configure los files ad email notifications.
+As you can imagine after the action is performed some things will happen: you can configure log files ad email notifications.
 
 Everything is managed thoutght the configuration file, here's an example:
 <pre>
