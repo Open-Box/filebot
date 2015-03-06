@@ -18,6 +18,12 @@ parseConfig ()
     FOLDERLIST=$(cat $1 | ./vendor/shyaml/shyaml get-values directories)
     FILETYPES=$(cat $1 | ./vendor/shyaml/shyaml get-values filetypes)
     ACTIONSFOLDER=$(cat $1 | ./vendor/shyaml/shyaml get-value actionFolder)
+    LOGDESTINATIONS=$(cat $1 | ./vendor/shyaml/shyaml get-value log.destinantions)
+    LOGFOLDER=$(cat $1 | ./vendor/shyaml/shyaml get-value log.folder)
+    LOGEMAILS=$(cat $1 | ./vendor/shyaml/shyaml get-value log.mails)
+    LOGFILEPREFIX=$(cat $1 | ./vendor/shyaml/shyaml get-value log.fileprefix)
+    LOGMAILSUBJECT=$(cat $1 | ./vendor/shyaml/shyaml get-value log.mailsubject)
+    LOGFILENAME=$(cat $1 | ./vendor/shyaml/shyaml get-value log.filename)"@"$(date "+%d-%m-%Y-%H-%M-%S")".log"
 }
 
 ################################################################################
@@ -28,6 +34,52 @@ parseActions ()
     source $1/*
 }
 
+
+# Logger
+logMessage()
+{
+  # Controlla se inserire il timestamp nel messaggio di log
+  if [ "$2" = "NT" ]; then
+    MESSAGE=$1
+  else
+    MESSAGE=$(date "+%Y-%m-%d %H:%M:%S")" - $1"
+  fi
+  
+  # Controlla a quali destinazioni inviare il messaggio di log
+  # in base al valore della variabile LOGDESTINATIONS
+  # C = Console
+  # F = File
+  # S = Syslog
+
+  if [[ "$LOGDESTINATIONS" =~ "C" ]]
+  then
+    echo $MESSAGE
+  fi
+  
+  if [[ "$LOGDESTINATIONS" =~ "F" ]]
+  then
+    echo $MESSAGE >> $LOGFOLDER$LOGFILENAME
+  fi
+  
+  if [[ "$LOGDESTINATIONS" =~ "S" ]]
+  then
+    logger -i -t -- $LOGFILEPREFIX" - "$MESSAGE
+  fi
+}
+
+################################################################################
+# Send mail                                                                    #
+################################################################################
+sendMail()
+{
+  for DESTEMAIL in $LOGEMAILS
+  do
+    if [ -s $LOGFOLDER$LOGFILENAME ];then
+    mail -s "$LOGMAILSUBJECT" "$DESTEMAIL" < "$LOGFOLDER$LOGFILENAME"
+    fi
+  done
+}
+
 ################################################################################
 # Folder file scanner                                                          #
 ################################################################################
@@ -36,10 +88,9 @@ scanFolder ()
     for FILE in $FOLDERFILES;
     do
       FILETYPE=$($COMMAND $COMMANDOPTIONS $FILE) 
-      echo "Scanning: " $FILE ">" $FILETYPE
+      #logMessage "Scanning: $FILE > $FILETYPE" NT
      if [ ! -d "$FILE" ]; then
       checkFileTypeForAction $FILETYPE
-      echo $FILEACTION
       $FILEACTION
      fi
     done
@@ -47,15 +98,15 @@ scanFolder ()
 
 checkFileTypeForAction ()
 {
-    myString="${FILETYPES//=/ }" 
-    read -a myArr <<<$myString
-    tLen=${#myArr[@]}
-      for (( i=0; i<${tLen}; i++ ));
+    MYSTRING="${FILETYPES//=/ }" 
+    read -a MYARR <<<$MYSTRING
+    TLEN=${#MYARR[@]}
+      for (( i=0; i<${TLEN}; i++ ));
        do
-        if [ "$FILETYPE" = "${myArr[$i]}" ]; then
-         echo "Combaciano " $FILETYPE "=" ${myArr[$i]}
+        if [ "$FILETYPE" = "${MYARR[$i]}" ]; then
+         logMessage "Trovato file!!!: $FILE " NT
          i=$((i+1))
-         ${myArr[$i]} $FILE
+         ${MYARR[$i]} $FILE
         fi 
       done
 }
@@ -69,6 +120,9 @@ botMain ()
       FOLDERFILES=$(ls -1d $FOLDER/*)
       scanFolder $FOLDERFILES
     done
+   if [ -s $LOGFOLDER$LOGFILENAME ];then
+    sendMail
+   fi
 }
 
 ################################################################################
