@@ -29,6 +29,27 @@ As you can imagine after the action is performed some things will happen: you ca
 
 Everything is managed thoutght the configuration file, here's an example:
 <pre>
+directories:
+    - ./testfiles/folder1
+    - ./testfiles/folder2
+
+filetypes:
+    - text/x-php=delete
+    - application/pdf=delete
+    
+command:
+    executable: file
+    options: -z -b --mime-type
+
+actionFolder: ./actions
+
+log: 
+    destinantions: CFS
+    folder: /var/log/script/
+    mails: serverlog@somewhere.it
+    fileprefix: filebot
+    mailsubject: Filebot report
+    filename: filebot
 </pre>
 
 More implementations will come, your contribuitions are welcome !
