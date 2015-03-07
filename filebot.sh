@@ -3,8 +3,8 @@
 ################################################################################
 # FileBot V 0.1                                                                #
 # Authors:                                                                     #
-# Gianluca Farinelli <g.farinelli@open-box-it>                                 #
-# Alberto Romiti <a.romiti@open-box.it>                                        #
+# - Gianluca Farinelli <g.farinelli@open-box-it>                                 #
+# - Alberto Romiti <a.romiti@open-box.it>                                        #
 ################################################################################
 CONFIGFILE=./config/config.yml
 declare -A FILETYPES
@@ -61,6 +61,7 @@ checkFileTypeForAction ()
         fi 
       done
 }
+
 ################################################################################
 # Main                                                                         #
 ################################################################################
