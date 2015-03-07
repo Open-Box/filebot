@@ -2,7 +2,9 @@
 
 ################################################################################
 # FileBot V 0.1                                                                #
-# Author: Gianluca Farinelli <g.farinelli@open-box-it>                         #
+# Authors:                                                                     #
+# Gianluca Farinelli <g.farinelli@open-box-it>                                 #
+# Alberto Romiti <a.romiti@open-box.it>                                        #
 ################################################################################
 CONFIGFILE=./config/config.yml
 declare -A FILETYPES
@@ -53,7 +55,7 @@ checkFileTypeForAction ()
       for (( i=0; i<${tLen}; i++ ));
        do
         if [ "$FILETYPE" = "${myArr[$i]}" ]; then
-         echo "Combaciano " $FILETYPE "=" ${myArr[$i]}
+         echo "Match found: " $FILETYPE "=" ${myArr[$i]}
          i=$((i+1))
          ${myArr[$i]} $FILE
         fi 
