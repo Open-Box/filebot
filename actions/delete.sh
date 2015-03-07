@@ -2,5 +2,6 @@
 
 delete ()
 {
-    logMessage "Il file è stato eliminato!!: $1 "
+    rm $1
+    logMessage "File has been deleted: $1 "
 }
