@@ -1,0 +1,6 @@
+[submodule "shyaml"]
+	path = shyaml
+	url = https://github.com/0k/shyaml.git
+[submodule "vendor/shyaml"]
+	path = vendor/shyaml
+	url = https://github.com/0k/shyaml.git

@@ -1,4 +1,4 @@
-![FileBot](https://openclipart.org/download/194634/Friendly-Robot-Remix-by-Merlin2525.svg  "FileBot")
+<img src="https://openclipart.org/download/194634/Friendly-Robot-Remix-by-Merlin2525.svg" alt="FileBot" width="40%" height="40%">
 
 #FileBot
 
@@ -23,7 +23,7 @@ Python project called **Shyaml**: [https://github.com/0k/shyaml](https://github.
 The general idea is to scan dir's and check every file mime-type, if the found mime-type is in the configuration file, the configured action is fired against the file.
 An example: let's suppose you want to scan a WordPress upload dir for malicious files, reasonably you don't want executable file to be there.
 You have to configure the mime-type of the executable file, let's say `text/x-php`, you can configure an *action* to delete the evil file.
-The action actually is a bash function that performs a series of task against the file.
+The action actually is a Bash function that performs a series of task against the file.
 
 As you can imagine after the action is performed some things will happen: you can configure log files ad email notifications.
 
