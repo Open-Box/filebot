@@ -2,5 +2,5 @@
 
 delete ()
 {
-    echo "Hey I'm deleting " $1
+    logMessage "Il file è stato eliminato!!: $1 "
 }

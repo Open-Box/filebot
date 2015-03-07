@@ -11,3 +11,11 @@ command:
     options: -z -b --mime-type
 
 actionFolder: ./actions
+
+log: 
+    destinantions: CFS
+    folder: /var/log/script/
+    mails: serverlog@open-box.it
+    fileprefix: filebot
+    mailsubject: Filebot report
+    filename: filebot
