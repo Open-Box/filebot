@@ -2,7 +2,9 @@
 
 ################################################################################
 # FileBot V 0.1                                                                #
-# Author: Gianluca Farinelli <g.farinelli@open-box-it>                         #
+# Authors:                                                                     #
+# - Gianluca Farinelli <g.farinelli@open-box-it>                               #
+# - Alberto Romiti <a.romiti@open-box.it>                                      #
 ################################################################################
 CONFIGFILE=./config/config.yml
 declare -A FILETYPES
@@ -38,33 +40,32 @@ parseActions ()
 # Logger
 logMessage()
 {
-  # Controlla se inserire il timestamp nel messaggio di log
-  if [ "$2" = "NT" ]; then
-    MESSAGE=$1
-  else
-    MESSAGE=$(date "+%Y-%m-%d %H:%M:%S")" - $1"
-  fi
-  
-  # Controlla a quali destinazioni inviare il messaggio di log
-  # in base al valore della variabile LOGDESTINATIONS
-  # C = Console
-  # F = File
-  # S = Syslog
 
-  if [[ "$LOGDESTINATIONS" =~ "C" ]]
-  then
-    echo $MESSAGE
-  fi
-  
-  if [[ "$LOGDESTINATIONS" =~ "F" ]]
-  then
-    echo $MESSAGE >> $LOGFOLDER$LOGFILENAME
-  fi
-  
-  if [[ "$LOGDESTINATIONS" =~ "S" ]]
-  then
-    logger -i -t -- $LOGFILEPREFIX" - "$MESSAGE
-  fi
+    # Checks whenever timestamp must be set in log message                         
+    if [ "$2" = "NT" ]; then
+      MESSAGE=$1
+    else
+      MESSAGE=$(date "+%Y-%m-%d %H:%M:%S")" - $1"
+    fi
+
+    # Checks log message deestinations based on LOGDESTINATIONS
+    # C = Console
+    # F = File
+    # S = Syslog
+    if [[ "$LOGDESTINATIONS" =~ "C" ]]
+    then
+      echo $MESSAGE
+    fi
+
+    if [[ "$LOGDESTINATIONS" =~ "F" ]]
+    then
+      echo $MESSAGE >> $LOGFOLDER$LOGFILENAME
+    fi
+
+    if [[ "$LOGDESTINATIONS" =~ "S" ]]
+    then
+      logger -i -t -- $LOGFILEPREFIX" - "$MESSAGE
+    fi
 }
 
 ################################################################################
@@ -72,12 +73,12 @@ logMessage()
 ################################################################################
 sendMail()
 {
-  for DESTEMAIL in $LOGEMAILS
-  do
-    if [ -s $LOGFOLDER$LOGFILENAME ];then
-    mail -s "$LOGMAILSUBJECT" "$DESTEMAIL" < "$LOGFOLDER$LOGFILENAME"
-    fi
-  done
+    for DESTEMAIL in $LOGEMAILS
+    do
+      if [ -s $LOGFOLDER$LOGFILENAME ];then
+      mail -s "$LOGMAILSUBJECT" "$DESTEMAIL" < "$LOGFOLDER$LOGFILENAME"
+      fi
+    done
 }
 
 ################################################################################
@@ -98,18 +99,19 @@ scanFolder ()
 
 checkFileTypeForAction ()
 {
-    MYSTRING="${FILETYPES//=/ }" 
-    read -a MYARR <<<$MYSTRING
-    TLEN=${#MYARR[@]}
+    STRING="${FILETYPES//=/ }" 
+    read -a TMPARRAY <<<$STRING
+    TLEN=${#TMPARRAY[@]}
       for (( i=0; i<${TLEN}; i++ ));
        do
-        if [ "$FILETYPE" = "${MYARR[$i]}" ]; then
-         logMessage "Trovato file!!!: $FILE " NT
+        if [ "$FILETYPE" = "${myArr[$i]}" ]; then
+         echo "Match found: " $FILETYPE "=" ${myArr[$i]}
          i=$((i+1))
-         ${MYARR[$i]} $FILE
+         ${TMPARRAY[$i]} $FILE
         fi 
       done
 }
+
 ################################################################################
 # Main                                                                         #
 ################################################################################
