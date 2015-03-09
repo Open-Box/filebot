@@ -1,12 +1,8 @@
 # Created by https://www.gitignore.io
 
 ### NetBeans ###
-<<<<<<< HEAD
 /nbproject
 nbproject/private/
-=======
-nbproject*
->>>>>>> cbc2e9527bef08b01a1eaad76bfed34bc61a2f11
 build/
 nbbuild/
 dist/
