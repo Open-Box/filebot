@@ -130,8 +130,8 @@ checkFileTypeForAction ()
     TLEN=${#TMPARRAY[@]}
       for (( i=0; i<${TLEN}; i++ ));
        do
-        if [ "$FILETYPE" = "${myArr[$i]}" ]; then
-         echo "Match found: " $FILETYPE "=" ${myArr[$i]}
+        if [ "$FILETYPE" = "${TMPARRAY[$i]}" ]; then
+         echo "Match found: " $FILETYPE "=" ${TMPARRAY[$i]}
          i=$((i+1))
          ${TMPARRAY[$i]} $FILE
         fi 

@@ -11,6 +11,8 @@ nbactions.xml
 nb-configuration.xml
 .nb-gradle/
 
+### ConfigFile ###
+config/config.yml
 
 ### Linux ###
 *~

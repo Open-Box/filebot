@@ -1,0 +1,22 @@
+default:
+    directories:
+        - ./testfiles/folder1
+        - ./testfiles/folder2
+
+    filetypes:
+        - text/x-php=delete
+        - application/pdf=delete
+
+    command:
+        executable: file
+        options: -z -b --mime-type
+
+    actionFolder: ./actions
+
+    log: 
+        destinantions: CFS
+        folder: /var/log/script/
+        mails: serverlog@open-box.it
+        fileprefix: filebot
+        mailsubject: Filebot report
+        filename: filebot
