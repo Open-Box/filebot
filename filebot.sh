@@ -33,7 +33,15 @@ parseConfig ()
 ################################################################################
 parseActions ()
 {
-    source $1/*
+    ACTIONS=$(ls $ACTIONSFOLDER)
+    STRING="${ACTIONS// / }"
+    read -a TMPARRAY <<<$STRING
+    TLEN=${#TMPARRAY[@]}
+      for (( i=0; i<${TLEN}; i++ ));
+      do
+       source $1/${TMPARRAY[$i]}
+      done 
+    
 }
 
 typeConfig ()

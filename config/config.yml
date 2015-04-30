@@ -4,8 +4,8 @@ default:
         - ./testfiles/folder2
 
     filetypes:
-        - text/x-php=delete
-        - application/pdf=delete
+        - text/x-php=blank
+        - application/pdf=blank
 
     command:
         executable: file
